@@ -6,7 +6,7 @@
  * error handling specific to rate limiting use cases.
  */
 
-import Redis from "ioredis";
+import { Redis, Cluster } from "ioredis";
 import { logger } from "../../utils/logger";
 import { StoreError } from "../../utils/errors";
 import { RedisStoreConfig } from "../../types";
@@ -51,12 +51,12 @@ export interface Store {
  * - Connection health monitoring
  */
 export class RedisStore implements Store {
-  private client: Redis | Redis.Cluster;
+  private client: Redis | Cluster;
   private config: RedisStoreConfig;
   private isClosed: boolean = false;
 
   constructor(
-    redisClient: Redis | Redis.Cluster,
+    redisClient: Redis | Cluster,
     config: Partial<RedisStoreConfig> = {},
   ) {
     this.client = redisClient;

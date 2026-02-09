@@ -14,16 +14,12 @@ export class AppError extends Error {
   public readonly isOperational: boolean;
   public readonly timestamp: number;
 
-  constructor(
-    message: string,
-    statusCode: number = 500,
-    isOperational: boolean = true,
-  ) {
+  constructor(message: string, statusCode: number = 500) {
     super(message);
-
+    this.statusCode = statusCode;
     this.name = this.constructor.name;
     this.statusCode = statusCode;
-    this.isOperational = isOperational;
+    this.isOperational = true; // Default operational status
     this.timestamp = Date.now();
 
     // Maintains proper stack trace for where our error was thrown
@@ -118,7 +114,7 @@ export class RedisConnectionError extends AppError {
 
     this.host = host;
     this.port = port;
-    this.isOperational = true; // This is an expected operational error
+    (this as any).isOperational = true; // This is an expected operational error
 
     Object.setPrototypeOf(this, RedisConnectionError.prototype);
   }
@@ -139,7 +135,7 @@ export class ConfigurationError extends AppError {
 
     this.configPath = configPath;
     this.configValue = configValue;
-    this.isOperational = true;
+    (this as any).isOperational = true;
 
     Object.setPrototypeOf(this, ConfigurationError.prototype);
   }

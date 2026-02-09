@@ -6,7 +6,7 @@
  */
 
 import winston from "winston";
-import "winston-daily-rotate-file";
+import DailyRotateFile from "winston-daily-rotate-file";
 import path from "path";
 
 /**
@@ -103,7 +103,7 @@ ensureLogsDirectory();
 /**
  * Define transports (where logs are output)
  */
-const transports = [
+const transports: winston.transport[] = [
   // Console transport (always enabled)
   new winston.transports.Console({
     format: consoleFormat,
@@ -111,7 +111,7 @@ const transports = [
   }),
 
   // Daily rotate file transport for all logs
-  new winston.transports.DailyRotateFile({
+  new DailyRotateFile({
     filename: path.join("logs", "application-%DATE%.log"),
     datePattern: "YYYY-MM-DD",
     zippedArchive: true,
@@ -122,7 +122,7 @@ const transports = [
   }),
 
   // Error-only log file
-  new winston.transports.DailyRotateFile({
+  new DailyRotateFile({
     filename: path.join("logs", "error-%DATE%.log"),
     datePattern: "YYYY-MM-DD",
     zippedArchive: true,
